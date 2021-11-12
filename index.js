@@ -22,6 +22,14 @@ async function run(){
         const database = client.db("carDealer");
         const carCollections = database.collection("cars");
 
+        // Get all data
+        app.get('/products', async(req, res)=>{
+            const cursor = carCollections.find({});
+            const products = await cursor.toArray();
+            res.send(products);
+        });
+
+
         // POST API
         app.post('/products', async(req, res)=>{
             const product = req.body;
