@@ -15,7 +15,27 @@ app.use(express.json());
 // database connect
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.iy859.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-console.log(uri, "connected");
+
+async function run(){
+    try{
+        await client.connect();
+        const database = client.db("carDealer");
+        const carCollections = database.collection("cars");
+
+        // POST API
+        app.post('/products', async(req, res)=>{
+            const product = req.body;
+            console.log('hit the post', product);
+
+            const result = await carCollections.insertOne(product);
+            console.log(result);
+
+            res.json(result);
+        });
+    }
+    finally{}
+}
+run().catch(console.dir);
 
 app.get('/', (req, res) => {
     res.send('Ready for the Assignment-12');
