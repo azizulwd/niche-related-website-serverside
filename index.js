@@ -36,10 +36,9 @@ async function run(){
             console.log('hit the post', product);
 
             const result = await carCollections.insertOne(product);
-            console.log(result);
-
             res.json(result);
         });
+
     }
     finally{}
 }
